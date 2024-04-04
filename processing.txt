@@ -1,0 +1,43 @@
+import pandas as pd
+import numpy as np
+import seaborn as sns
+from matplotlib import pyplot as plt
+import matplotlib as plt
+%matplotlib inline
+
+df = pd.read_csv("BankLoanApproval.csv")
+df.head()
+
+# Mapping the categorical to numerical 
+# Selecting variables 
+# Dropped the LoanID
+# Define the mappings
+education_mapping = {'High School': 0, "Bachelor's": 1, "Master's": 2, 'PhD': 3}
+employment_mapping = {'Unemployed': 0, 'Part-time': 1, 'Full-time': 2, 'Self-employed': 3}
+marital_mapping = {'Single': 0, 'Married': 1, 'Divorced': 2}
+mortgage_mapping = {'Yes': 1, 'No': 0}
+
+# Select the specified columns
+selected_columns = df[["Age", "Income", "LoanAmount", "CreditScore", "DTIRatio", 
+                       "Education", "EmploymentType", "MaritalStatus", 
+                       "HasMortgage", "Default"]]
+
+# Map the education column
+selected_columns['Education'] = selected_columns['Education'].map(education_mapping)
+
+# Map the employment column
+selected_columns['EmploymentType'] = selected_columns['EmploymentType'].map(employment_mapping)
+
+# Map the marital status column
+selected_columns['MaritalStatus'] = selected_columns['MaritalStatus'].map(marital_mapping)
+
+# Map the HasMortgage column
+selected_columns['HasMortgage'] = selected_columns['HasMortgage'].map(mortgage_mapping)
+
+df =selected_columns
+df.head()
+
+X =df.drop("Default",axis=1)
+Y = df["Default"]
+
+from sklearn.model_selection import train_test_split
